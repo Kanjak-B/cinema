@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('clients', function (Blueprint $table) {
-            $table->id();
-            $table->string('email')->unique();
-            $table->string('name');
-            $table->string('telephone');
-            $table->timestamps();
+        Schema::table('billets', function (Blueprint $table) {
+            $table->unsignedBigInteger('film_id');
+            $table->foreign('film_id')->references('id')->on('films')->onDelete('cascade');
         });
     }
 
@@ -25,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('clients');
+        Schema::table('billets', function (Blueprint $table) {
+            $table->dropColumn('film_id');
+        });
     }
 };
