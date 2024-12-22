@@ -13,4 +13,9 @@ class Billet extends Model
     {
         return $this->belongsTo(Owner::class);
     }
+
+    public function film()
+    {
+        return $this->belongsTo(Film::class);
+    }
 }

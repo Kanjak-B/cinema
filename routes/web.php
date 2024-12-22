@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\FilmController;
+use App\Http\Controllers\Banque\PaymentController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,18 +17,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [HomeController::class, 'index']);
+
+Route::get('/banque/form-payment-ticket/{id}', [PaymentController::class, 'form_payment'])->name('banque.form-payment');
+Route::post('/banque/payment', [PaymentController::class, 'check'])->name('banque.check');
+Route::get('/test', [PaymentController::class, 'truc'])->name('test');
+
+Route::prefix('admin')->group(function(){
+    Route::get('films', [FilmController::class, 'index'])->name('films.index');
+    Route::get('films/create', [FilmController::class, 'create'])->name('films.create');
+    Route::post('films/store', [FilmController::class, 'store'])->name('films.store');
 });
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-require __DIR__.'/auth.php';
